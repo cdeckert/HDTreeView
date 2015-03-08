@@ -15,6 +15,16 @@ angular.module('treeviewHeidelbergApp')
 			{module: "A", parameter: "p1", fromDate: "20151033"}
 		]
 
+		# factory... / service
+		class node
+			constructor: (item, field)->
+				@colapsed = true
+				@label = item[field]
+				@children = []
+				
+		treeNode = (item, field) = ->
+
+
 		getTreeView = (machine)->
 			result = []
 			moduleMap = {}
@@ -35,15 +45,17 @@ angular.module('treeviewHeidelbergApp')
 				id++
 				moduleOb = {
 					id : id
-					title: module
-					items: []
+					label: module
+					children: []
+					collapsed: true
 				}
 				for parameter of moduleMap[module]
 					id++
 					parameterOb = {
 						id : id
-						title: parameter
-						items: []
+						label: parameter
+						children: []
+						collapsed: true
 					}
 					
 
@@ -51,22 +63,24 @@ angular.module('treeviewHeidelbergApp')
 						id++
 						fromDateObj = {
 							id: id
-							title: fromDate
-							items: []
+							label: fromDate
+							children: []
+							collapsed: true
 						}
 						for item in moduleMap[module][parameter][fromDate]
 							id++
 							itemObjec = {
-						  	id: id
-						  	title: item.name
-						  	items: []
-						  }
-						fromDateObj.items.push itemObjec
-					parameterOb.items.push fromDateObj
-				moduleOb.items.push parameterOb
+								id: id
+								label: item.name
+								children: []
+								collapsed: true
+							}
+						fromDateObj.children.push itemObjec
+					parameterOb.children.push fromDateObj
+				moduleOb.children.push parameterOb
 			moduleOb
 
-		$scope.nodes = getTreeView($scope.machine)
+		$scope.treedata = [getTreeView($scope.machine)]
 
 
 

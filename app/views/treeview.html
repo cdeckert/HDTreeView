@@ -1,20 +1,11 @@
 <p>This is the treeView view.</p>
 
-
-<div ui-tree>
-  <ol ui-tree-nodes ng-model="rows">
-    <li ng-repeat="row in rows" ui-tree-node>
-      <div ui-tree-handle>
-        {{row.name}}
-      </div>
-
-      <ol ui-tree-nodes ng-model="row.columns">
-        <li ng-repeat="column in row.columns" ui-tree-node>
-          <div ui-tree-handle>
-            {{column.name}}
-          </div>
-        </li>
-      </ol>
-    </li>
-  </ol>
+<pre>{{treedata}}</pre>
+<div
+    data-angular-treeview="true"
+    data-tree-id="abc"
+    data-tree-model="treedata"
+    data-node-id="id"
+    data-node-label="label"
+    data-node-children="children" >
 </div>

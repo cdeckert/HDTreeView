@@ -16,7 +16,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.tree'
+    'angularTreeview'
   ])
   .config ($routeProvider) ->
     $routeProvider
