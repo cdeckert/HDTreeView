@@ -10,23 +10,58 @@
 angular.module('treeviewHeidelbergApp')
 	.controller 'HeidelbergtreeviewCtrl', ($scope) ->
 		$scope.machine = [
-			{module: "A", parameter: "p1", fromDate: "20151031"},
-			{module: "A", parameter: "p2", fromDate: "20151032"},
-			{module: "A", parameter: "p1", fromDate: "20151033"}
+			{module: "A", parameter: "p1", fromDate: "20151031", id: "123"},
+			{module: "A", parameter: "p2", fromDate: "20151032", id: "234"},
+			{module: "A", parameter: "p1", fromDate: "20151033", id: "456"}
 		]
 
 		# factory... / service
-		class node
-			constructor: (item, field)->
-				@colapsed = true
-				@label = item[field]
+		class Node
+			constructor: (@label)->
 				@children = []
-				
-		treeNode = (item, field) = ->
+				@colapsed = true
 
+			push_back: (node)->
+				@children.push node
+		
+
+
+		# 
+		transform_to_map = (machine) ->
+			result = {}
+			for item in machine
+				module = item["module"]
+				parameter = item["parameter"]
+				fromDate = item["fromDate"]
+				result[module] = {} if !result[module]?
+				result[module][parameter] = {} if !result[module][parameter]?
+				result[module][parameter][fromDate] = [] if !result[module][parameter][fromDate]?
+				result[module][parameter][fromDate].push item
+			result
 
 		getTreeView = (machine)->
+
+			maped_items = transform_to_map(machine)
+
 			result = []
+
+			for module_key of maped_items
+				module = new Node(module_key)
+				module_item = mapped_items[module_key
+
+				for parameter_key of module_item
+					parameter = new Node(parameter_key)
+					parameter_item = module_item[parameter_key]
+
+					for fromDate_key of parameter_item
+						fromDate = new Node(fromDate_key)
+						fromDate_item = parameter_item[fromDate_key]
+
+					#	for fromDate_record in fromDate_item
+					#		fromDate.push_back(new Node(fromDate_record.id))
+
+
+
 			moduleMap = {}
 			for item in machine
 				if !moduleMap[item.module]?
