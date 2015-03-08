@@ -10,55 +10,43 @@
 angular.module('treeviewHeidelbergApp')
 	.controller 'HeidelbergtreeviewCtrl', ($scope) ->
 		$scope.machine = [
-			{module: "A", parameter: "p1", fromDate: "20151031", id: "123"},
-			{module: "A", parameter: "p2", fromDate: "20151032", id: "234"},
-			{module: "A", parameter: "p1", fromDate: "20151033", id: "456"}
+			{module: "A", parameter: "p1", fromDate: "20151031"},
+			{module: "A", parameter: "p2", fromDate: "20151032"},
+			{module: "B", parameter: "p2", fromDate: "20151032"},
+			{module: "A", parameter: "p1", fromDate: "20151033"}
 		]
 
 		# factory... / service
 		class Node
-			constructor: (@label)->
-				@children = []
+			constructor: (item, field)->
 				@colapsed = true
+				@label = item[field]
+				@children = []
 
 			push_back: (node)->
 				@children.push node
 		
 
-
 		# 
-		transform_to_map = (machine) ->
-			result = {}
+		transform_to_map = (machine, fields...) ->
+
+			temp = {}
+			for field in fields
+				temp[field] = {}
+
 			for item in machine
-				module = item["module"]
-				parameter = item["parameter"]
-				fromDate = item["fromDate"]
-				result[module] = {} if !result[module]?
-				result[module][parameter] = {} if !result[module][parameter]?
-				result[module][parameter][fromDate] = [] if !result[module][parameter][fromDate]?
-				result[module][parameter][fromDate].push item
-			result
+				for field in fields
+					temp[field][item[field]] = [] if !temp[field][item.field]? 
+					temp[field][item[field]].push item
+			temp
+				
+
+			#for item in machine
+				
+
 
 		getTreeView = (machine)->
 
-			maped_items = transform_to_map(machine)
-
-			result = []
-
-			for module_key of maped_items
-				module = new Node(module_key)
-				module_item = mapped_items[module_key
-
-				for parameter_key of module_item
-					parameter = new Node(parameter_key)
-					parameter_item = module_item[parameter_key]
-
-					for fromDate_key of parameter_item
-						fromDate = new Node(fromDate_key)
-						fromDate_item = parameter_item[fromDate_key]
-
-					#	for fromDate_record in fromDate_item
-					#		fromDate.push_back(new Node(fromDate_record.id))
 
 
 
@@ -112,10 +100,11 @@ angular.module('treeviewHeidelbergApp')
 							}
 						fromDateObj.children.push itemObjec
 					parameterOb.children.push fromDateObj
-				moduleOb.children.push parameterOb
-			moduleOb
+					moduleOb.children.push parameterOb
+				tree.push moduleOb
+			tree
 
-		$scope.treedata = [getTreeView($scope.machine)]
+		$scope.treedata = getTreeView($scope.machine)
 
 
 
